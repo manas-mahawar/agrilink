@@ -1,5 +1,3 @@
-# AgriLink
-
 # AgriLink — Starting local. Scaling smart.
 
 **Live Demo:** [https://agrilink-blue.vercel.app](https://agrilink-blue.vercel.app)
