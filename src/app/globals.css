@@ -1,0 +1,131 @@
+@import 'tailwindcss';
+
+/* ---------------------------------------------------------------------------
+   AgriLink design tokens (from the Claude Design reference — see docs/DESIGN_INVENTORY.md)
+   --------------------------------------------------------------------------- */
+@theme {
+  --font-sans: 'Inter Variable', 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-display: 'Manrope Variable', 'Manrope', 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
+
+  --color-forest: #174c32;
+  --color-forest-deep: #103b28;
+  --color-forest-ink: #0d2f20;
+  --color-leaf: #79a85a;
+  --color-eyebrow: #3e7a2f;
+  --color-cream: #f8f7f0;
+  --color-cream-deep: #f4f3ea;
+  --color-paper: #fcfbf6;
+  --color-saffron: #e9ad3b;
+  --color-saffron-deep: #dc9e28;
+  --color-ink: #202820;
+  --color-ink-soft: #3d463d;
+  --color-muted: #5c665c;
+  --color-line: #e3e3d8;
+  --color-line-soft: #efefe7;
+  --color-line-strong: #c9d1c4;
+  --color-field: #c6cec2;
+  --color-sage: #e7ece1;
+  --color-sage-soft: #f1f5ec;
+  --color-on-forest: #d2e1ca;
+  --color-on-forest-muted: #bfd9ae;
+
+  --color-ok-bg: #e3eeda;
+  --color-ok-fg: #1d4f31;
+  --color-wait-bg: #faebcb;
+  --color-wait-fg: #6f4a05;
+  --color-info-bg: #e1eaf6;
+  --color-info-fg: #1c4673;
+  --color-neutral-bg: #edebe6;
+  --color-neutral-fg: #544b44;
+  --color-danger: #b3261e;
+  --color-danger-deep: #9b2c1f;
+  --color-danger-bg: #fbe9e7;
+  --color-danger-line: #e3c6c0;
+
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 20px;
+
+  --shadow-card: 0 1px 2px rgb(16 59 40 / 0.04);
+  --shadow-lift: 0 10px 28px rgb(16 59 40 / 0.09);
+  --shadow-pop: 0 18px 40px rgb(0 0 0 / 0.18);
+
+  --animate-skeleton: skeleton 1.2s linear infinite;
+  @keyframes skeleton {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-padding-top: 5rem;
+  }
+  body {
+    background: var(--color-cream);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  :focus-visible {
+    outline: 3px solid var(--color-saffron);
+    outline-offset: 2px;
+  }
+  ::selection {
+    background: var(--color-saffron);
+    color: var(--color-ink);
+  }
+  input[type='number']::-webkit-inner-spin-button,
+  input[type='number']::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  input[type='number'] {
+    -moz-appearance: textfield;
+  }
+}
+
+@utility eyebrow {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-eyebrow);
+}
+
+@utility tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+@utility container-page {
+  width: 100%;
+  max-width: 1240px;
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+  @media (width < 40rem) {
+    padding-inline: 1rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

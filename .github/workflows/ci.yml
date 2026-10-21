@@ -1,0 +1,51 @@
+# Runs every check on GitHub's Linux machines: lint, types, unit tests, database/RLS tests
+# against a local Supabase-compatible stack, a production build, and the browser tests.
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      NEXT_TELEMETRY_DISABLED: '1'
+      PG_BIN: /usr/lib/postgresql/16/bin
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm test
+      - name: Start local Supabase-compatible stack
+        run: |
+          npm run stack:download
+          npm run stack:reset
+          nohup npm run stack:start > stack.log 2>&1 &
+          for i in $(seq 1 30); do curl -sf http://127.0.0.1:54321/auth/v1/health && break; sleep 1; done
+      - run: npm run test:db
+      - name: Build against the local stack
+        run: |
+          eval "$(npm run --silent stack:env | sed 's/^/export /')"
+          echo "NEXT_PUBLIC_SUPABASE_URL=$NEXT_PUBLIC_SUPABASE_URL" >> "$GITHUB_ENV"
+          echo "NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=$NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY" >> "$GITHUB_ENV"
+          echo "::add-mask::$SUPABASE_SECRET_KEY"
+          echo "NEXT_PUBLIC_SITE_URL=http://localhost:3000" >> "$GITHUB_ENV"
+          NEXT_PUBLIC_SITE_URL=http://localhost:3000 npm run build
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:e2e
+      - if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-output
+          path: |
+            playwright-report/
+            test-results/
+            stack.log
+            .stack/*.log
