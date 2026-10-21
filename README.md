@@ -1,5 +1,9 @@
 # AgriLink
 
+# AgriLink — Starting local. Scaling smart.
+
+**Live Demo:** [https://agrilink-blue.vercel.app](https://agrilink-blue.vercel.app)
+
 A pre-harvest marketplace for Patiala, Punjab. Farmers list tomatoes, potatoes and onions
 before harvest. Retailers, restaurants, hotels and processors browse nearby growers, make
 offers and agree terms early. Tagline: *Starting local. Scaling smart.*
